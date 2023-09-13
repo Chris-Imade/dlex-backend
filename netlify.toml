@@ -1,3 +1,0 @@
-[build]
-  command = "node server.js" # This should be the command to start your server
-  functions = "netlify/functions" # Folder where Netlify Functions will be stored
