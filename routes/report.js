@@ -20,6 +20,8 @@ const extractRecipientEmail = (req, res, next) => {
 
 // Send transaction route
 router.post('/sendTransaction', extractRecipientEmail, async (req, res) => {
+    // const userId = "";
+
   try {
     // Fetch transaction data from the database using the Transaction model
     const transactionData = await Transaction.find({});
