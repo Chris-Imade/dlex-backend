@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
@@ -27,7 +27,9 @@ const userSchema = mongoose.Schema({
     termsAndCondition: {
         type: String,
     },
-    paymentInfo: { type: mongoose.Schema.Types.Array, ref: "PaymentInfo" }
+    paymentInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: "PaymentInfo" }],
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
 }, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);

@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Product = require("../schemas/Product");
 const sendEmailWithCustomTemplate = require('../lib/sendEmailWithCustomTemplate');
-const User = require('../schemas/User');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
@@ -17,78 +16,40 @@ cloudinary.config({
 // Create Product
 const createProduct = async (req, res, next) => {
     const product = req.body;
-    const currentUserId = req.params.userId; // Get the user's ID from the request
-  
-    try {
-      // Check if a product with the same name already exists in the database
-      const existingProduct = await Product.findOne({
-        uniqueIdentifier: product.uniqueIdentifier,
-      });
-  
-      if (!existingProduct) {
-        // If the product with the same name does not exist, create a new product
-        
-        // Get the user's document to retrieve their products array and include the _id field
-        const user = await User.findById(currentUserId).select('products');
 
-        if(user) {
+    try {
+        // Check if a product with the same name already exists in the database
+        const existingProduct = await Product.findOne({ uniqueIdentifier: product.uniqueIdentifier });
+
+        if (!existingProduct) {
+            // If the product with the same name does not exist, create a new product
             const newProduct = new Product(product);
             await newProduct.save();
-            // Push the entire product object into the user's products array
-            user.products.push(newProduct);
-      
-            // Save the updated user document
-            await user.save();
-            
+    
             res.status(201).json({
-              message: 'Success',
-              status: 201,
-              detail: 'Product successfully created',
-              product: newProduct,
+            message: "Success",
+            status: 201,
+            detail: "Product successfully created",
+            product: newProduct,
             });
+        } else {
+            return res.status(200).json({ existingData: existingProduct.uniqueIdentifier});
         }
-        res.status(400).json({
-          message: 'Failed',
-          status: 400,
-          detail: 'User not Found',
-          userId: currentUserId,
-        });
 
-      } else {
-        return res
-          .status(200)
-          .json({ existingData: existingProduct.uniqueIdentifier });
-      }
     } catch (error) {
-      next(error);
+        next(error);
     }
-  };
+};
   
 
 // Get all products
-const getProducts = async (req, res, next) => {
-    const currentUserId = req.params.userId; // Get the user's ID from the request
-    console.log('User currentId: ', currentUserId);
-
-    // try {
-    //   // Find the current user based on currentUserId
-    //   const currentUser = await User.findById(currentUserId).populate('products');
-  
-    //   if (!currentUser) {
-    //     return res
-    //       .status(404)
-    //       .json({ message: 'User Not Found', status: 404 });
-    //   }
-  
-    //   // Access the products array of the current user
-    //   const products = currentUser.products;
-
-    //   res.status(200).json(currentUser);
-  
-    // } catch (error) {
-    //   next(error);
-    // }
-  };
+const getProducts = (req, res, next) => {
+    Product.find().then((products) => {
+        res.status(200).json(products);
+    }).catch((err) => {
+        next(err);
+    })
+}
 
 // Get single product
 const getProduct = (req, res, next) => {

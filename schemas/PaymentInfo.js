@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const paymentInfoSchema = mongoose.Schema({
+const paymentInfoSchema = new mongoose.Schema({
     bankName: {
         type: String,
         unique: true,

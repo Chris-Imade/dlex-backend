@@ -12,10 +12,10 @@ const upload = multer();
 
 const router = express.Router();
 
-router.post("/", upload.none(), createProduct);
-router.get("/", verifyToken, getProducts);
-router.get("/:productId", verifyToken, getProduct);
-router.put("/:productId", verifyToken, updateProduct);
-router.delete("/:productId", verifyToken, deleteProduct);
+router.post("/:userId", upload.none(), createProduct);
+router.get("/:userId", verifyToken, getProducts);
+router.get("/:productId/:userId", verifyToken, getProduct);
+router.put("/:productId/:userId", verifyToken, updateProduct);
+router.delete("/:productId/:userId", verifyToken, deleteProduct);
 
 module.exports = router;

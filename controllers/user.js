@@ -23,7 +23,7 @@ const getUser = (req, res, next) => {
 // Get User Id
 const getUSerID = (req, res, next) => {
     verifyToken(req, res, () => {
-        res.status(200).json({ userId: req.user.id });
+        res.status(200).json({ userId: req.user._id });
     })
 }
 
