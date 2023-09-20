@@ -26,10 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     termsAndCondition: {
         type: String,
-    },
-    paymentInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: "PaymentInfo" }],
-    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
-    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
+    }
 }, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);

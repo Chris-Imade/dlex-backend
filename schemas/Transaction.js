@@ -7,13 +7,18 @@ const transactionSchema = new mongoose.Schema({
     priority: String,
     deadline: Date,
     email: {
-        type: String
+        type: String,
     },
     phone: String,
     phoneTwo: String,
     desc: String,
     uniqueIdentifier: String,
-    products: { type: mongoose.Schema.Types.Array, ref: "Products" }
+    products: { type: mongoose.Schema.Types.Array, ref: "Products" },
+    userId: {
+        type: String,
+        required: true,
+        unique: true
+    }
 }, { timestamp: true });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

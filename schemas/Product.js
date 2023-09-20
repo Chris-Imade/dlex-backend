@@ -22,6 +22,11 @@ const productSchema = new mongoose.Schema({
     },
     desc: String,
     uniqueIdentifier: String,
+    userId: {
+        type: String,
+        required: true,
+        unique: true
+    }
 })
 
 const Product = mongoose.model("Product", productSchema);

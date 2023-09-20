@@ -15,6 +15,11 @@ const paymentInfoSchema = new mongoose.Schema({
         type: Number,
         unique: true,
         required: true
+    },
+    userId: {
+        type: String,
+        required: true,
+        unique: true
     }
 })
 
