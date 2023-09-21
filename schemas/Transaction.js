@@ -13,12 +13,7 @@ const transactionSchema = new mongoose.Schema({
     phoneTwo: String,
     desc: String,
     uniqueIdentifier: String,
-    products: { type: mongoose.Schema.Types.Array, ref: "Products" },
-    userId: {
-        type: String,
-        required: true,
-        unique: true
-    }
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
 }, { timestamp: true });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

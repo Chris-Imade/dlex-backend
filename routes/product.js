@@ -5,7 +5,7 @@ const {
     updateProduct,
     deleteProduct,
     createProduct
-} = require("../controllers/products");
+} = require("../controllers/productControl");
 const { verifyToken } = require("../lib/verifyToken");
 const multer = require('multer');
 const upload = multer();

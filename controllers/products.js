@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Product = require("../schemas/Product");
 const sendEmailWithCustomTemplate = require('../lib/sendEmailWithCustomTemplate');
+const createError = require('../lib/error');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
@@ -57,28 +58,40 @@ const getProducts = (req, res, next) => {
 // Get single product
 const getProduct = (req, res, next) => {
     const productId = req.params.productId;
+    const userId = req.query.userId;
 
     Product.findById(productId).then((product) => {
-        if(product) {
-            res.status(200).json(product);
-        }
-
+      if(product) {
+        if(userId !== product.userId) {
+          res.status(403).json({ message: 'You are not allowed to request this product!', status: 403, details: 'You can only request for products you created, our clients confidentiality is our top priority' })
+        } else {
+          res.status(200).json(product);
+        }        
+      } else {
         res.status(404).json({ message: "Failed", status: 404, detail: "Product not found" });
-    }).catch((err) => {
-        next(err);
-    })
+      }
+  }).catch((err) => {
+      next(err);
+  })
 }
 
 // Update product
-const updateProduct = (req, res, next) => {
+const updateProduct = async (req, res, next) => {
     const productId = req.params.productId;
+    const userId = req.query.userId;
     const newProduct = req.body;
 
-    Product.findByIdAndUpdate(productId, { $set: newProduct }, { new: true }).then((product) => {
-        res.status(200).json(product);
-    }).catch((err) => {
-        next(err);
-    })
+    Product.findById(productId).then((product) => {
+        if(product.userId === userId) {
+          Product.findByIdAndUpdate(productId, { $set: newProduct }, { new: true }).then((product) => {
+              res.status(200).json(product);
+          }).catch((err) => {
+              createError(404, 'Product not found 😥', err);
+          })
+        } else {
+          res.status(403).json({ message: 'You can\'t proceed with this request as you are not authorized', status: 403, details: 'You can\'t edit or make modifications to a product you did not create' })
+        }
+    }).catch(err => createError(403, 'You can\'t proceed with this request as you are not authorized', err));
 }
 
 
@@ -105,7 +118,6 @@ const deleteProduct = async (req, res, next) => {
         // Upload image to Cloudinary and get the image URL
         const uploadResult = await cloudinary.uploader.upload(`data:image/${product.imageFormat};base64,${product.image}`);
         const imageUrl = uploadResult.secure_url;
-        console.log("Cloudinary Image: ", imageUrl);
         // Send an email containing the product details and a styled email template
         const subject = `Product Deleted: ${product.name}`;
 

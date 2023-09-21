@@ -26,7 +26,10 @@ const userSchema = new mongoose.Schema({
     },
     termsAndCondition: {
         type: String,
-    }
+    },
+    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
+    products: { type: mongoose.Schema.Types.Array, ref: 'Product'},
+    
 }, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);

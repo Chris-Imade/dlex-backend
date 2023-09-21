@@ -16,11 +16,6 @@ const paymentInfoSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    userId: {
-        type: String,
-        required: true,
-        unique: true
-    }
 })
 
 const PaymentInfo = mongoose.model("PaymentInfo", paymentInfoSchema);
