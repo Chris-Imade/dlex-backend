@@ -64,53 +64,46 @@ We encourage testers to try out the Dlex software and provide valuable feedback.
 
 We appreciate your support in making Dlex a reliable and user-friendly solution.
 
---- **Routes**
+- **Routes**
 
---- **Products Routes**
+1. **Products Routes**
 
 - It is worth noting that most endpoints requires the userId to be passed on as a query to the path, it's also worth noting that each request except the authentication requests are to have an Authoriazation header with the value of type {{Token actual_token}}
 
-- **Post: `{{ _.baseURL }}/api/v1/reports/sendTransaction?userId={{userId}}`**
-**This endpoint would fetch all the transactions belonging to the current user and convert the data to a CSV file after which the file is sent the the user's registered mail.**
+- Post: `{{ _.baseURL }}/api/v1/reports/sendTransaction?userId={{userId}}`: This endpoint fetches all the transactions belonging to the current user, converts the data to a CSV file, and then sends the file to the user's registered email.
 
-- **Post: `{{ _.baseURL }}/api/v1/products?userId={{userId}}`**
-**This endpoint creates a new product from the JSON body passed on to the req object. It also returns the new product created.**
+- Post: `{{ _.baseURL }}/api/v1/products?userId={{userId}}`: This endpoint is responsible for creating a new product based on the JSON data provided in the request body. Once the product is successfully created, it not only stores the new product in the system but also provides a response that includes details about the newly created product. This allows users to access information about the product they've just added to the system, enhancing the user experience and providing confirmation of the successful creation of the product.
 
-- **Get: `{{ _.baseURL }}/api/v1/products?userId={{userId}}`**
-- **This endpoint returns all the products the user has created it take's no parameter or parses no body.**
+- Get: `{{ _.baseURL }}/api/v1/products?userId={{userId}}`: This endpoint serves as a query to retrieve all the products that have been created by the user. It operates without the need for any additional parameters or data parsing within the request body. When accessed, this endpoint provides a comprehensive list of all the products associated with the user, offering a convenient way to access and manage their product portfolio.
 
-- **Get: `{{ _.baseURL }}/api/v1/products/{{productId}}?userId={{userId}}` This endpoint returns the single product of which its id is being passed on as a parameter in the path.**
+- Get: `{{ _.baseURL }}/api/v1/products/{{productId}}?userId={{userId}}`: This endpoint retrieves a specific product by using the product's unique identifier, which is passed as a parameter in the path.
 
-- **Put: `{{ _.baseURL }}/api/v1/products/{{productId}}?userId={{userId}}` This endpoint updates the product of which it's id is passed as a parameter, it takes in the update as a json object and returns the updated product.**
+- Put: `{{ _.baseURL }}/api/v1/products/{{productId}}?userId={{userId}}`: This endpoint is responsible for updating a product based on its unique identifier, which is provided as a parameter in the request path. It accepts the updates as a JSON object within the request body. After processing the update, it responds by returning the product with all modifications applied, ensuring that users have access to the most up-to-date product information.
 
-- **Delete: `{{ _.baseURL }}/api/v1/products/{{productId}}?userId={{userId}}` This endpoints does a series of things. When a product is deleted, the email of the user extracted from the user's token in the Authorization and then used alongside nodemailer and some other transparent factors to update the user/admin/owner the certain products have been deleted.**
+- Delete: `{{ _.baseURL }}/api/v1/products/{{productId}}?userId={{userId}}`: This endpoint performs a series of actions when a product is deleted. First, it extracts the user's email from the user's token provided in the Authorization header. Next, it utilizes this email, along with the Nodemailer library and other relevant components, to send notifications to the user, admin, or owner, informing them that specific products have been successfully deleted. This comprehensive notification system ensures that all relevant parties are informed of the deletion event.
 
-- **It is also worth noting that images used for the products are stored as base64 strings and when the user makes a delete requests, the images are uploaded to cloudinary from where the preview images are used as thumbnails for the mail.**
+- Additionally, it's important to mention that the images associated with the products are stored as base64 strings. When a user initiates a delete request, these images undergo a process where they are uploaded to Cloudinary. Cloudinary then serves as the source for generating preview images, which are subsequently utilized as thumbnails within the email notifications. This approach enhances the efficiency and presentation of product deletion notifications.
 
---- **Transaction Routes**
+2. **Transaction Routes**
 
 
-- **Post: `{{ _.baseURL }}/api/v1/transaction?userId={{userId}}`**
-**This endpoint creates a new transaction from the JSON body passed on to the req object. It also returns the new transaction created.**
+- Post: `{{ _.baseURL }}/api/v1/transaction?userId={{userId}}`: This endpoint is responsible for the creation of new transactions based on the JSON data provided within the request body. Once the transaction is successfully created, it not only stores the new transaction in the system but also provides a response that includes details about the newly created transaction. This enables users to access information regarding the transaction they've just added to the system, enhancing user experience and confirming the successful creation of the transaction.
 
-- **Get: `{{ _.baseURL }}/api/v1/transaction?userId={{userId}}`**
-- **This endpoint returns all the transaction the user has created it take's no parameter or parses no body.**
+- Get: `{{ _.baseURL }}/api/v1/transaction?userId={{userId}}`: This endpoint serves as a query to retrieve all the transactions that have been created by the user. It operates without requiring any additional parameters or data parsing within the request body. When accessed, this endpoint provides a comprehensive list of all the transactions associated with the user, offering a convenient way to access and manage their transaction history.
 
-- **Get: `{{ _.baseURL }}/api/v1/transaction/{{transactionId}}?userId={{userId}}` This endpoint returns the single transaction of which its id is being passed on as a parameter in the path.**
+- Get: `{{ _.baseURL }}/api/v1/transaction/{{transactionId}}?userId={{userId}}`: This endpoint retrieves a specific transaction by using the transaction's unique identifier, which is passed as a parameter in the request path.
 
-- **Put: `{{ _.baseURL }}/api/v1/transaction/{{transactionId}}?userId={{userId}}` This endpoint updates the transaction of which it's id is passed as a parameter, it takes in the update as a json object and returns the updated transaction.**
+- Put: `{{ _.baseURL }}/api/v1/transaction/{{transactionId}}?userId={{userId}}`: This endpoint is responsible for updating a transaction based on its unique identifier, which is provided as a parameter in the request path. It accepts the updates as a JSON object within the request body. After processing the update, it responds by returning the transaction with all modifications applied, ensuring that users have access to the most up-to-date transaction information.
 
-- **Delete: `{{ _.baseURL }}/api/v1/transaction/{{transactionId}}?userId={{userId}}` This simply filters out the transaction based on the id passed and then deletes it.**
+- Delete: `{{ _.baseURL }}/api/v1/transaction/{{transactionId}}?userId={{userId}}`: This straightforward process involves filtering out the transaction based on the provided ID and subsequently deleting it from the system.
 
 
-- **For the users route:**
-- **Get: `{{ _.baseURL }}/api/v1/users/user-id:`**
-**This route uses the Authorization header to get the user's id and send back as a response, can come in handy when you need to know the user's id in other to make other requests.**
+3. **For the users route:**
+- Get: `{{ _.baseURL }}/api/v1/users/user-id:`: This route efficiently utilizes the Authorization header to extract the user's ID and promptly returns it as a response. This functionality proves invaluable when there is a need to obtain the user's ID for making subsequent requests, streamlining the process of gathering essential user information for various operations.
 
-- **Put: `{{ _.baseURL }}/api/v1/users/user/{{userId}}` **chatgpt - only - you should know how to describe this by now save me the time**
+- Put: `{{ _.baseURL }}/api/v1/users/user/{{userId}}`: This endpoint anticipates that the new updates to the user's document will be included in the request body, while the user's document's unique ID requiring an update is passed as a parameter. Upon successful execution, this endpoint responds by providing the updated user object, ensuring that users have access to the most current user information after the update.
 
-- **Get: `{{ _.baseURL }}/api/v1/users/user/{{userId}}`:**
-**Gets a single user by user ID.**
+- Get: `{{ _.baseURL }}/api/v1/users/user/{{userId}}`: This endpoint retrieves a single user based on their unique user ID.
 
 **For Authentication:**
 **Post: `{{ _.baseURL }}/api/v1/auth/register`**
@@ -134,7 +127,7 @@ We appreciate your support in making Dlex a reliable and user-friendly solution.
 ```
 --- **when successful and an error when not. Errors may vary depending on the kind of issues to be addressed.**
 
-- **Post: {{ _.baseURL }}/api/v1/auth/login**
+- **Post: `{{ _.baseURL }}/api/v1/auth/login`**
 --- **This endpoint expects as minimal as:**
 ```javascript
 {
@@ -149,7 +142,7 @@ We appreciate your support in making Dlex a reliable and user-friendly solution.
 	"message": "Success",
 	"status": 200,
 	"details": "User successfully logged in 😇",
-	"token": "**chatgpt - only - jwt token sample here**"
+	"token": "jwt token here"
 }
 ```
 
