@@ -1,6 +1,6 @@
 # Dlex-backend
 
-![Dlex Insight](./assets/images/dlex.png)
+![Dlex Insight](./assets/dlex.png)
 
 ## Introduction
 
