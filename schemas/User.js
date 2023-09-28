@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     termsAndCondition: {
         type: String,
     },
-    transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
+    transactions: { type: mongoose.Schema.Types.Array, ref: 'Transaction' },
     products: { type: mongoose.Schema.Types.Array, ref: 'Product'},
     
 }, { timestamps: true });

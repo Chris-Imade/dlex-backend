@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const Transaction = require('../schemas/Transaction');
 const sendTransactionsWithCustomMail = require('../lib/sendTransactions');
+const User = require('../schemas/User');
 
 
 // Middleware to extract the recipient email from the JWT token
@@ -20,11 +21,14 @@ const extractRecipientEmail = (req, res, next) => {
 
 // Send transaction route
 router.post('/sendTransaction', extractRecipientEmail, async (req, res) => {
-    // const userId = "";
+    const userId = req.query.userId;
 
   try {
+    // Get the current User
+    const user = await User.findById(userId);
+    
     // Fetch transaction data from the database using the Transaction model
-    const transactionData = await Transaction.find({});
+    const transactionData = user.transactions;
 
     const recipientEmail = req.recipientEmail;
     const emailSubject = 'Weekly Transaction Report';

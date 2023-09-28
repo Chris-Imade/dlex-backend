@@ -11,9 +11,9 @@ const { verifyToken } = require('../lib/verifyToken');
 const router = express.Router();
 
 router.post("/", verifyToken,createTransaction);
-router.put("/:transactionId", verifyToken, updateTransactions);
+router.put("/:transId", verifyToken, updateTransactions);
 router.get("/", verifyToken, getTransactions);
-router.get("/:transactionId", verifyToken, getTransaction);
-router.delete("/:transactionId", verifyToken, deleteTrans);
+router.get("/:transId", verifyToken, getTransaction);
+router.delete("/:transId", verifyToken, deleteTrans);
 
 module.exports = router;
